@@ -24,7 +24,7 @@ ie. A query of "depth" 2 would look like this: (depth annotations added to try a
 )
 ```
 Where:
-;;(count artists) == cardinality
+`;;(count artists) == cardinality`
 
 This example is of course contrived as, in this case it'd be trivial to remove `?artists1` as the same results would be produced.
 
