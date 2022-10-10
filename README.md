@@ -1,11 +1,11 @@
-##Preface
+## Preface ##
 
 While it's [clear](https://docs.datomic.com/cloud/best.html#most-selective-clauses-first) and intuitive that when writing a query the most selective clauses should be first in a query, the performance implications of having multiple clauses of effectively the same selectivity is not clear.
 
 In this example we demonstrate that multiple identically selective clauses can have a drastically adverse effect on query performance.
 We use the [mbrainz-1968-1973](https://github.com/Datomic/mbrainz-importer) example data set for demonstration purposes.
 
-##Methodology
+## Methodology ##
 
 For demonstration purposes we'll use a set number of artists "cardinality" and query for all the releases which belong to those artists "depth" times.
 
@@ -28,7 +28,7 @@ Where:
 
 This example is of course contrived as, in this case it'd be trivial toe remove `?artists1` and the same results would be produced.
 
-##<a name="not-so-contrived"></a>When this might not be so contrived
+## <a name="not-so-contrived"></a>When this might not be so contrived ##
 
 In the project where I encountered this performance snafu the structure seemed more rational.
 
@@ -45,7 +45,7 @@ So assuming that mbrainz had some concept of rules to grant access our use case 
      (d/db conn) artists)
 ```
 
-##Running the default test suite:
+## Running the default test suite: ##
 Create config/manifest.edn and fill it out appropriately to point at a restored version of mbrainz-1968-1973.
 
 
@@ -71,7 +71,7 @@ So our use case would look more like:
      (d/db conn) artists)
 ```
 
-##Findings
+## Findings ##
 Here are some data points which I measured against the mbrainz data set stored in and queried against a Datomic Cloud instance whose DatomicCloudVersion was 9095.
 I understand that the scope of this may not be all that useful, but I figured I'd include it as a starting point to demonstrate the behavior I am seeing.
 
@@ -121,10 +121,10 @@ Timing (in milliseconds) ≈ 0.308 \* (cardinality/50)\*\*2 - 8.308\*(cardinalit
 | 600         | 2           | 6735.600 ms |
 | 650         | 2           | 8603.500 ms |
 
-###Short comings:
+### Short comings: ###
 It may not actually be that useful to cite "cardinality" as the number of artists under consideration, as artist won't have a constant number of releases in the dataset.
 
-##Known resolution
+## Known resolution ##
 
 Considering the access rule pattern from [this section](#not-so-contrived) assuming that release access can be re-written as artists access the first clause could simply limit ?artists to those artists which you have access.
 
