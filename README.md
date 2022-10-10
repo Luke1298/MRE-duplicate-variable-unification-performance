@@ -10,7 +10,7 @@ We use the [mbrainz-1968-1973](https://github.com/Datomic/mbrainz-importer) exam
 For demonstration purposes we'll use a set number of artists "cardinality" and query for all the releases which belong to those artists "depth" times.
 
 
-ie. Our contrived queries look like this:
+ie. A query of "depth" 2 would look like this: (depth annotations added to try and make the depth parameter clear)
 
 ```
 (d/q '[:find (count ?release)
@@ -26,7 +26,7 @@ ie. Our contrived queries look like this:
 Where:
 ;;(count artists) == cardinality
 
-This example is of course contrived as, in this case it'd be trivial toe remove `?artists1` and the same results would be produced.
+This example is of course contrived as, in this case it'd be trivial to remove `?artists1` as the same results would be produced.
 
 ## <a name="not-so-contrived"></a>When this might not be so contrived ##
 
@@ -34,15 +34,15 @@ In the project where I encountered this performance snafu the structure seemed m
 
 The system uses [datomic rules](https://docs.datomic.com/cloud/query/query-data-reference.html#rules) to limit a users access.
 
-So assuming that mbrainz had some concept of rules to grant access our use case would look more like:
+So assuming that we created some concept of access control to the data in mbrainz we could could have an access rule which would grant conditional access to releases:
 
 ```
 (d/q '[:find (count ?release)
-       :in $ [?artists ...]
+       :in $ % [?artists ...]
        :where
        (releases-i-can-access? ?release) ;; (Effectively: [?release :release/artists ?artists-i-can-access] ;;(?artists-i-can-access may equal ?artists)
        [?release :release/artists ?artists]] ;;Filter to specific artists in which I am interested
-     (d/db conn) artists)
+     (d/db conn) users-access-rules artists)
 ```
 
 ## Running the default test suite: ##
@@ -50,25 +50,9 @@ Create config/manifest.edn and fill it out appropriately to point at a restored 
 
 
 
-To cause the timeout simply run: (Notice the timeout for Depth=3 (or 4), Cardinality = 500):
+Assuming you're using the default 60000 ms the default test suite will timeout for Depth=3 (or 4) and Cardinality = 500:
 ```
 clojure -M -m example.core config/manifest.edn
-```
-
-
-However, in the project where I encountered this performance snafu the structure seemed more rational.
-
-The system uses rules to limit a users access.
-
-So our use case would look more like:
-
-```
-(d/q '[:find (count ?release)
-       :in $ [?artists ...]
-       :where
-       (releases-i-can-access? ?release) ;; (Effectively: [?release :release/artists ?artists-i-can-access] ;;(?artists-i-can-access may equal ?artists)
-       [?release :release/artists ?artists]] ;;Filter to specific artists in which I am interested
-     (d/db conn) artists)
 ```
 
 ## Findings ##
@@ -130,11 +114,11 @@ Considering the access rule pattern from [this section](#not-so-contrived) assum
 
 ```
 (d/q '[:find (count ?release)
-       :in $ [?artists ...]
+       :in $ % [?artists ...]
        :where
        (artists-i-can-access? ?artists) ;; This will limit the set of artists that moves down to the next clauses, and doesn't cause a ?release to be unified multiple times at all)
        [?release :release/artists ?artists]]
-     (d/db conn) artists)
+     (d/db conn) users-access-rules artists)
 ```
 
 However, I would like to understand the underlying performance implications of unifying a variable multiple times.
