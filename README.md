@@ -46,7 +46,7 @@ So assuming that we created some concept of access control to the data in mbrain
 ```
 
 ## Running the default test suite: ##
-Create config/manifest.edn and fill it out appropriately to point at a restored version of mbrainz-1968-1973.
+Create config/manifest.edn and fill it out appropriately to point at a restored version of [mbrainz-1968-1973](https://github.com/Datomic/mbrainz-importer).
 
 
 
