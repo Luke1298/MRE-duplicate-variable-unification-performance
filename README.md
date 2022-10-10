@@ -30,7 +30,7 @@ This example is of course contrived as, in this case it'd be trivial to remove `
 
 ## <a name="not-so-contrived"></a>When this might not be so contrived ##
 
-In the project where I encountered this performance snafu the structure seemed more rational.
+In the project where I encountered this unanticipated performance implication the structure seemed more rational.
 
 The system uses [datomic rules](https://docs.datomic.com/cloud/query/query-data-reference.html#rules) to limit a users access.
 
