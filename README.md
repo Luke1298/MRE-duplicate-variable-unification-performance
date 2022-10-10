@@ -18,7 +18,9 @@ This example is contrived as, in this case, it never makes sense to do. `?artist
 
 However, in the project where I encountered this performance snafu the structure seemed more rational. 
 
-The system uses rules to limit a users access, it would look like: 
+The system uses rules to limit a users access. 
+
+So our use case would look more like:
 
 ```
 (d/q '[:find (count ?release)
