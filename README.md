@@ -1,6 +1,6 @@
 ## Preface ##
 
-While it's [clear](https://docs.datomic.com/cloud/best.html#most-selective-clauses-first) and intuitive that when writing a query the most selective clauses should be first in a query, the performance implications of having multiple clauses of effectively the same selectivity is not clear.
+While it's [clear](https://docs.datomic.com/cloud/best.html#most-selective-clauses-first) and intuitive that when writing a query the most selective clauses should be first in a query, the performance implications of having multiple clauses of effectively the same selectivity on the same variable is not clear.
 
 In this example we demonstrate that multiple identically selective clauses can have a drastically adverse effect on query performance.
 We use the [mbrainz-1968-1973](https://github.com/Datomic/mbrainz-importer) example data set for demonstration purposes.
