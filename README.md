@@ -1,7 +1,9 @@
 Create config/manifest.edn and fill it out appropraitely to point at a restored version of mbrainz-1968-1973.
 
-To cause the timeout simply run: (Notice the timeout for Depth=3, Cardinality = 500)
+To cause the timeout simply run: (Notice the timeout for Depth=3, Cardinality = 500):
+```
 clojure -M -m example.core config/manifest.edn
+```
 
 This example is contrived as, in this case, it never makes sense to do. `?artists2` can simply be droped to produce the same results in this example: 
 
